@@ -36,6 +36,7 @@ def income_cat_proportions(data):
 download_root = "https://raw.githubusercontent.com/ageron/handson-ml/master/"
 housing_path = os.path.join("datasets", "housing")
 housing_url = download_root + "datasets/housing/housing.tgz"
+fetch_housing_data(housing_url, housing_path)
 housing = load_housing_data(housing_path)
 
 
