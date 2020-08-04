@@ -1,8 +1,8 @@
 # Median housing value prediction
 
-The housing data can be downloaded from https://raw.githubusercontent.com/ageron/handson-ml/master/. The script has codes to download the data. We have modelled the median house value on given housing data. 
+The housing data can be downloaded from https://raw.githubusercontent.com/ageron/handson-ml/master/. The script has codes to download the data. We have modelled the median house value on given housing data.
 
-The following techniques have been used: 
+The following techniques have been used:
 
  - Linear regression
  - Decision Tree
@@ -13,6 +13,13 @@ The following techniques have been used:
  - Features are generated and the variables are checked for correlation.
  - Multiple sampling techinuqies are evaluated. The data set is split into train and test.
  - All the above said modelling techniques are tried and evaluated. The final metric used to evaluate is mean squared error.
+
+## Environment setup
+`conda update conda`
+`conda env create -f devenv.yml`
+`conda activate devenv`
+To remove the environment
+`conda remove --name devenv --all`
 
 ## To excute the script
 python < scriptname.py >

@@ -1,0 +1,12 @@
+name: devenv
+dependencies:
+  - python=3.7
+  - pip=19.0.1
+  - ipython
+  - pip:
+    - black==19.10b0
+    - numpy==1.19.1
+    - matplotlib==3.3.0
+    - pandas==1.1.0
+    - flake8==3.8.3
+    - isort==5.2.2
