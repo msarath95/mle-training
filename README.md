@@ -16,9 +16,13 @@ The following techniques have been used:
 
 ## Environment setup
 `conda update conda`
+
 `conda env create -f devenv.yml`
+
 `conda activate devenv`
+
 To remove the environment
+
 `conda remove --name devenv --all`
 
 ## To excute the script
