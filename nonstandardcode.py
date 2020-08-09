@@ -57,6 +57,8 @@ for train_index, test_index in split.split(housing, housing["income_cat"]):
     strat_train_set = housing.loc[train_index]
     strat_test_set = housing.loc[test_index]
 
+train_set, test_set = train_test_split(housing, test_size=0.2, random_state=42)
+
 compare_props = pd.DataFrame(
     {
         "Overall": income_cat_proportions(housing),
