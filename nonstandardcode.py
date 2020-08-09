@@ -1,7 +1,6 @@
 import os
 import tarfile
 
-import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from scipy.stats import randint
@@ -10,16 +9,16 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.impute import SimpleImputer
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_absolute_error, mean_squared_error
-from sklearn.model_selection import (GridSearchCV, RandomizedSearchCV,
-                                     StratifiedShuffleSplit, train_test_split)
+from sklearn.model_selection import (
+    GridSearchCV,
+    RandomizedSearchCV,
+    StratifiedShuffleSplit,
+    train_test_split,
+)
 from sklearn.tree import DecisionTreeRegressor
 
-DOWNLOAD_ROOT = "https://raw.githubusercontent.com/ageron/handson-ml/master/"
-HOUSING_PATH = os.path.join("datasets", "housing")
-HOUSING_URL = DOWNLOAD_ROOT + "datasets/housing/housing.tgz"
 
-
-def fetch_housing_data(housing_url=HOUSING_URL, housing_path=HOUSING_PATH):
+def fetch_housing_data(housing_url, housing_path):
     os.makedirs(housing_path, exist_ok=True)
     tgz_path = os.path.join(housing_path, "housing.tgz")
     urllib.request.urlretrieve(housing_url, tgz_path)
@@ -28,12 +27,20 @@ def fetch_housing_data(housing_url=HOUSING_URL, housing_path=HOUSING_PATH):
     housing_tgz.close()
 
 
-def load_housing_data(housing_path=HOUSING_PATH):
+def load_housing_data(housing_path):
     csv_path = os.path.join(housing_path, "housing.csv")
     return pd.read_csv(csv_path)
 
 
-housing = load_housing_data
+def income_cat_proportions(data):
+    return data["income_cat"].value_counts() / len(data)
+
+
+download_root = "https://raw.githubusercontent.com/ageron/handson-ml/master/"
+housing_path = os.path.join("datasets", "housing")
+housing_url = download_root + "datasets/housing/housing.tgz"
+fetch_housing_data(housing_url, housing_path)
+housing = load_housing_data(housing_path)
 
 
 train_set, test_set = train_test_split(housing, test_size=0.2, random_state=42)
@@ -49,13 +56,6 @@ split = StratifiedShuffleSplit(n_splits=1, test_size=0.2, random_state=42)
 for train_index, test_index in split.split(housing, housing["income_cat"]):
     strat_train_set = housing.loc[train_index]
     strat_test_set = housing.loc[test_index]
-
-
-def income_cat_proportions(data):
-    return data["income_cat"].value_counts() / len(data)
-
-
-train_set, test_set = train_test_split(housing, test_size=0.2, random_state=42)
 
 compare_props = pd.DataFrame(
     {
@@ -124,7 +124,6 @@ lin_mae = mean_absolute_error(housing_labels, housing_predictions)
 lin_mae
 
 
-
 tree_reg = DecisionTreeRegressor(random_state=42)
 tree_reg.fit(housing_prepared, housing_labels)
 
@@ -152,7 +151,6 @@ rnd_search.fit(housing_prepared, housing_labels)
 cvres = rnd_search.cv_results_
 for mean_score, params in zip(cvres["mean_test_score"], cvres["params"]):
     print(np.sqrt(-mean_score), params)
-
 
 
 param_grid = [
