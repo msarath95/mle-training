@@ -1,42 +1,29 @@
-import os
-import tarfile
-
 import numpy as np
 import pandas as pd
 from scipy.stats import randint
-from six.moves import urllib
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.impute import SimpleImputer
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_absolute_error, mean_squared_error
-from sklearn.model_selection import (GridSearchCV, RandomizedSearchCV,
-                                     StratifiedShuffleSplit, train_test_split)
+from sklearn.model_selection import (
+    GridSearchCV,
+    RandomizedSearchCV,
+    StratifiedShuffleSplit,
+    train_test_split,
+)
 from sklearn.tree import DecisionTreeRegressor
-
-
-def fetch_housing_data(housing_url, housing_path):
-    os.makedirs(housing_path, exist_ok=True)
-    tgz_path = os.path.join(housing_path, "housing.tgz")
-    urllib.request.urlretrieve(housing_url, tgz_path)
-    housing_tgz = tarfile.open(tgz_path)
-    housing_tgz.extractall(path=housing_path)
-    housing_tgz.close()
-
-
-def load_housing_data(housing_path):
-    csv_path = os.path.join(housing_path, "housing.csv")
-    return pd.read_csv(csv_path)
+from housing.preparation import utils as ut
+from housing.preparation import data_utils as du
 
 
 def income_cat_proportions(data):
     return data["income_cat"].value_counts() / len(data)
 
 
-download_root = "https://raw.githubusercontent.com/ageron/handson-ml/master/"
-housing_path = os.path.join("datasets", "housing")
-housing_url = download_root + "datasets/housing/housing.tgz"
-fetch_housing_data(housing_url, housing_path)
-housing = load_housing_data(housing_path)
+cfg_path = "./config/config.yml"
+cfg = ut.read_config(cfg_path)
+du.fetch_housing_data(cfg["housing_url"], cfg["housing_path"])
+housing = du.load_housing_data(cfg["housing_path"])
 
 
 train_set, test_set = train_test_split(housing, test_size=0.2, random_state=42)
