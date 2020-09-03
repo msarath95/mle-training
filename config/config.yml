@@ -1,2 +1,13 @@
 housing_url: "https://raw.githubusercontent.com/ageron/handson-ml/master/datasets/housing/housing.tgz"
 housing_path: "./data/raw/"
+model_data_path: './data/processed/'
+models_path: './models/'
+seed: 2020
+test_size: 0.2
+over_write_raw_data: True
+over_write_model_data: True
+sampling_method: 'stratified' # stratified or random
+num_impute: 'mean' # mean, most_frequent, median, constant
+num_constant: 0
+cat_impute: 'constant' # most_frequent, constant
+cat_constant: 'missing'
