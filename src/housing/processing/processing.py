@@ -19,6 +19,7 @@ def impute(data, num_impute="mean", cat_impute="mode", num_constant=None, cat_co
         imputer: imputer object
     """
     cols = data.columns
+    dtype_dict = data.dtypes
     if num_impute == "constant":
         num_imputer = SimpleImputer(strategy=num_impute, fill_value=num_constant)
     else:
@@ -36,20 +37,36 @@ def impute(data, num_impute="mean", cat_impute="mode", num_constant=None, cat_co
     )
     imputer.fit(data)
     data = imputer.transform(data)
-    data = pd.DataFrame(data, columns=cols)
-    # check with Senganal about the data types
+    data = pd.DataFrame(data, columns=cols, dtype=dtype_dict.values)
     return data, imputer
 
 
 def impute_transform(data, imputer):
+    """Impute transform for test data set
+    Parameters:
+    -----------
+        data: data frame
+        imputer: imputer object
+    Returns:
+    --------
+        data: imputed data frame
+    """
     cols = data.columns
+    dtype_dict = data.dtypes
     data = imputer.transform(data)
-    data = pd.DataFrame(data, columns=cols)
+    data = pd.DataFrame(data, columns=cols, dtype=dtype_dict.values)
     return data
 
 
 def generate_features(data):
-    """"""
+    """Generates new features
+    Parameters:
+    -----------
+        data: data frame
+    Returns:
+    --------
+        data: with new features
+    """
     data["rooms_per_household"] = data["total_rooms"] / data["households"]
     data["bedrooms_per_room"] = data["total_bedrooms"] / data["total_rooms"]
     data["population_per_household"] = data["population"] / data["households"]

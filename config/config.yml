@@ -4,10 +4,62 @@ model_data_path: './data/processed/'
 models_path: './models/'
 seed: 2020
 test_size: 0.2
-over_write_raw_data: True
+over_write_raw_data: False
 over_write_model_data: True
 sampling_method: 'stratified' # stratified or random
 num_impute: 'mean' # mean, most_frequent, median, constant
 num_constant: 0
 cat_impute: 'constant' # most_frequent, constant
 cat_constant: 'missing'
+version: 'v1' # change this else we'll overwrite the old version
+algo: 'linear-ridge' # linear-ridge, linear-lasso, decision_tree, random_forest
+linear-ridge:
+    alpha: 1.0
+    fit_intercept: True
+    normalize: False
+    copy_X: True
+    max_iter: null
+    tol: 0.001
+    solver: 'auto'
+linear-lasso:
+    alphad: 1.0
+    fit_interceptd: True
+    normalized: False
+    precomputed: False
+    copy_Xd: True
+    max_iterd: 1000
+    told: 0.0001
+    warm_startd: False
+    positived: False
+    selectiond: 'cyclic'
+decision_tree:
+    criterion: 'mse'
+    splitter: 'best'
+    max_depth: null
+    min_samples_split: 2
+    min_samples_leaf: 1
+    min_weight_fraction_leaf: 0.0
+    max_features: null
+    max_leaf_nodes: null
+    min_impurity_decrease: 0.0
+    min_impurity_split: null
+    ccp_alpha: 0.0
+random_forest:
+    n_estimators: 500
+    criterion: 'mse'
+    max_depth: null
+    min_samples_split: 35
+    min_samples_leaf:  50
+    max_features: 1.0
+    min_weight_fraction_leaf: 0.0
+    max_features: 'auto'
+    max_leaf_nodes: null
+    min_impurity_decrease: 0.0
+    min_impurity_split: null
+    bootstrap: True
+    oob_score: False
+    verbose: 0
+    warm_start: False
+    ccp_alpha: 0.0
+    max_samples: null
+    n_jobs: -1

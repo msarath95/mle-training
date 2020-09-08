@@ -56,7 +56,18 @@ def load_housing_data(housing_path):
 
 
 def get_train_test_split(data, sampling_method="stratified", seed=42, test_size=0.2):
-    """This function is to split the train and test data"""
+    """This function is to split the train and test data
+    Parameters
+    ----------
+        data: data frame
+        sampling_method: stratified or random
+        seed: random seed
+        test_size: test data size
+    Returns:
+    --------
+        train: train data set
+        test: test data set
+    """
     if sampling_method == "stratified":
         data["income_cat"] = pd.cut(
             data["median_income"], bins=[0.0, 1.5, 3.0, 4.5, 6.0, np.inf], labels=[1, 2, 3, 4, 5]
@@ -81,7 +92,10 @@ def prepare_model_data(cfg):
     --------
         void
     """
-    create_data = not is_data_exists(cfg["model_data_path"] + "/train.csv") or cfg["over_write_model_data"]
+    create_data = (
+        not is_data_exists(cfg["model_data_path"] + "/train_{version}.csv".format(**cfg))
+        or cfg["over_write_model_data"]
+    )
     fetch_housing_data(**cfg)
     data = load_housing_data(cfg["housing_path"])
     if create_data:
@@ -90,15 +104,16 @@ def prepare_model_data(cfg):
         # Impute
         train, imputer = pr.impute(train, **cfg)
         test = pr.impute_transform(test, imputer)
-        pkl.dump(imputer, open(cfg["models_path"] + "/imputer.pkl", "wb"))
+        pkl.dump(imputer, open(cfg["models_path"] + "/imputer_{version}.pkl".format(**cfg), "wb"))
         # Feature Engineer
         train = pr.generate_features(train)
         test = pr.generate_features(test)
 
         # one-hotencode with column names?
 
-        train.to_csv(cfg["model_data_path"] + "/train.csv", index=False)
-        test.to_csv(cfg["model_data_path"] + "/test.csv", index=False)
-    train = pd.read_csv(cfg["model_data_path"] + "/train.csv")
-    test = pd.read_csv(cfg["model_data_path"] + "/test.csv")
+        train.to_csv(cfg["model_data_path"] + "/train_{version}.csv".format(**cfg), index=False)
+        test.to_csv(cfg["model_data_path"] + "/test_{version}.csv".format(**cfg), index=False)
+    else:
+        train = pd.read_csv(cfg["model_data_path"] + "/train_{version}.csv".format(**cfg))
+        test = pd.read_csv(cfg["model_data_path"] + "/test_{version}.csv".format(**cfg))
     return train, test
