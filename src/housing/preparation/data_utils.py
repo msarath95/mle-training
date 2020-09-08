@@ -83,6 +83,22 @@ def get_train_test_split(data, sampling_method="stratified", seed=42, test_size=
     return train, test
 
 
+def prepare_test_data(data, imputer):
+    """This function creates the test data
+    Parameters
+    ----------
+        data: test data set
+        imputer: imputer object to impute missing values
+    Returns:
+    --------
+        data; processed test data
+    """
+    data = pr.impute_transform(data, imputer)
+    data = pr.generate_features(data)
+    data = pd.get_dummies(data)
+    return data
+
+
 def prepare_model_data(cfg):
     """This function creates the train and test model data
     Parameters
@@ -103,14 +119,14 @@ def prepare_model_data(cfg):
 
         # Impute
         train, imputer = pr.impute(train, **cfg)
-        test = pr.impute_transform(test, imputer)
         pkl.dump(imputer, open(cfg["models_path"] + "/imputer_{version}.pkl".format(**cfg), "wb"))
         # Feature Engineer
         train = pr.generate_features(train)
-        test = pr.generate_features(test)
 
         # one-hotencode with column names?
+        train = pd.get_dummies(train)
 
+        test = prepare_test_data(test, imputer)
         train.to_csv(cfg["model_data_path"] + "/train_{version}.csv".format(**cfg), index=False)
         test.to_csv(cfg["model_data_path"] + "/test_{version}.csv".format(**cfg), index=False)
     else:
