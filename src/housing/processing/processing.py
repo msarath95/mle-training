@@ -6,17 +6,26 @@ from sklearn.impute import SimpleImputer
 
 def impute(data, num_impute="mean", cat_impute="mode", num_constant=None, cat_constant=None, **kwargs):
     """Impute data based on the method
-    Parameters:
-    -----------
-        data: data frame
-        num_impute: str numerical imputation method
-        cat_impute: str categorical imputation method
-        num_constant: numerical constant to use when the num_imputer is constant
-        cat_constant: categorical constant to use when the cat_imputer is constant
-    Returns:
-    --------
-        data: data frame
-        imputer: imputer object
+
+    Parameters
+    ----------
+        data: pd.DataFrame
+            input data frame to be imputed
+        num_impute: str, default mean
+            numerical imputation method
+        cat_impute: str, default mode
+            categorical imputation method
+        num_constant: numeric
+            numerical constant to use when the num_imputer is constant
+        cat_constant: str
+            categorical constant to use when the cat_imputer is constant
+    
+    Returns
+    -------
+        data: pd.DataFrame
+            input data frame to be imputed
+        imputer: object
+            imputer object
     """
     cols = data.columns
     dtype_dict = data.dtypes
@@ -44,13 +53,18 @@ def impute(data, num_impute="mean", cat_impute="mode", num_constant=None, cat_co
 
 def impute_transform(data, imputer):
     """Impute transform for test data set
-    Parameters:
-    -----------
-        data: data frame
-        imputer: imputer object
-    Returns:
-    --------
-        data: imputed data frame
+
+    Parameters
+    ----------
+        data: pd.DataFrame
+            input data frame to be imputed
+        imputer: object
+            imputer object
+
+    Returns
+    -------
+        data: pd.DataFrame
+            imputed data frame
     """
     cols = data.columns
     dtype_dict = data.dtypes
@@ -62,12 +76,16 @@ def impute_transform(data, imputer):
 
 def generate_features(data):
     """Generates new features
-    Parameters:
-    -----------
-        data: data frame
-    Returns:
-    --------
-        data: with new features
+
+    Parameters
+    ----------
+        data: pd.DataFrame
+            input data frame
+
+    Returns
+    -------
+        data: pd.DataFrame
+            data frame with new features
     """
     data["rooms_per_household"] = data["total_rooms"] / data["households"]
     data["bedrooms_per_room"] = data["total_bedrooms"] / data["total_rooms"]
