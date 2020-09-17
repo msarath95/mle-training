@@ -37,7 +37,8 @@ def impute(data, num_impute="mean", cat_impute="mode", num_constant=None, cat_co
     )
     imputer.fit(data)
     data = imputer.transform(data)
-    data = pd.DataFrame(data, columns=cols, dtype=dtype_dict.values)
+    data = pd.DataFrame(data, columns=cols)
+    data = data.astype(dtype_dict)
     return data, imputer
 
 
@@ -54,7 +55,8 @@ def impute_transform(data, imputer):
     cols = data.columns
     dtype_dict = data.dtypes
     data = imputer.transform(data)
-    data = pd.DataFrame(data, columns=cols, dtype=dtype_dict.values)
+    data = pd.DataFrame(data, columns=cols)
+    data = data.astype(dtype_dict)
     return data
 
 

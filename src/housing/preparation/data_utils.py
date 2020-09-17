@@ -80,7 +80,7 @@ def get_train_test_split(data, sampling_method="stratified", seed=42, test_size=
         test.drop("income_cat", axis=1, inplace=True)
     elif sampling_method == "random":
         train, test = train_test_split(data, test_size=test_size, random_state=seed)
-    return train, test
+    return train.reset_index(drop=True), test.reset_index(drop=True)
 
 
 def prepare_test_data(data, imputer):
@@ -94,8 +94,11 @@ def prepare_test_data(data, imputer):
         data; processed test data
     """
     data = pr.impute_transform(data, imputer)
+    print("Test imputer")
     data = pr.generate_features(data)
+    print("Test feature eng")
     data = pd.get_dummies(data)
+    print("Test one hotencode")
     return data
 
 
@@ -116,17 +119,26 @@ def prepare_model_data(cfg):
     data = load_housing_data(cfg["housing_path"])
     if create_data:
         train, test = get_train_test_split(data, cfg["sampling_method"], cfg["seed"], cfg["test_size"])
-
+        train_x = train.drop("median_house_value", axis=1)
+        test_x = test.drop("median_house_value", axis=1)
+        train_y = train["median_house_value"]
+        test_y = test["median_house_value"]
+        print("Train Test Data")
         # Impute
-        train, imputer = pr.impute(train, **cfg)
+        train_x, imputer = pr.impute(train_x, **cfg)
         pkl.dump(imputer, open(cfg["models_path"] + "/imputer_{version}.pkl".format(**cfg), "wb"))
+        # print(test.dtypes)
+        print("Train Imputer")
         # Feature Engineer
-        train = pr.generate_features(train)
-
+        train_x = pr.generate_features(train_x)
+        print("Train Feature Eng")
         # one-hotencode with column names?
-        train = pd.get_dummies(train)
+        train_x = pd.get_dummies(train_x)
+        print("Train one hot encode")
 
-        test = prepare_test_data(test, imputer)
+        test_x = prepare_test_data(test_x, imputer)
+        train = pd.concat([train_x, train_y], axis=1)
+        test = pd.concat([test_x, test_y], axis=1)
         train.to_csv(cfg["model_data_path"] + "/train_{version}.csv".format(**cfg), index=False)
         test.to_csv(cfg["model_data_path"] + "/test_{version}.csv".format(**cfg), index=False)
     else:

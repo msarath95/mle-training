@@ -2,7 +2,6 @@ import pickle as pkl
 
 from sklearn import linear_model
 from sklearn.ensemble import RandomForestRegressor
-from sklearn.model_selection import GridSearchCV, RandomizedSearchCV
 from sklearn.tree import DecisionTreeRegressor
 
 
