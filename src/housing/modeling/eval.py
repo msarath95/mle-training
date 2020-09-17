@@ -4,17 +4,18 @@ from sklearn import metrics
 
 
 def reg_metric_MAPE(y_true, y_hat):
-    '''
+    """
     Computes Mean Absolute Percent error
     Ignore values with y_true=0
-    Parameters:
-    -----------
-        y_true: actual values
-        y_hat: predicted values
-    Returns:
-    --------
-        MAPE(float)
-    '''
+
+    :param y_true: actual values
+    :type y_true: np.array
+    :param y_hat: predicted values
+    :type y_hat: np.array
+
+    :return: WMAPE
+    :rtype: float
+    """
     if len(y_true) != len(y_hat):
         raise Exception("y_true & y_hat should be of equal length")
     y_true, y_hat = np.array(y_true), np.array(y_hat)
@@ -22,17 +23,17 @@ def reg_metric_MAPE(y_true, y_hat):
 
 
 def reg_metric_WMAPE(y_true, y_hat):
-    '''
-    Computes Weighted Mean Absolute Deviation. Similar to reg_metric_MAPE but weighted by y_true.
+    """Computes Weighted Mean Absolute Deviation. Similar to reg_metric_MAPE but weighted by y_true.
     This ignores y_true=0 and tends to be higher if the errors are higher for higher y_true values.
-    Parameters:
-    -----------
-        y_true: actual values
-        y_hat: predicted values
-    Returns:
-    --------
-        WMAPE(float)
-    '''
+
+    :param y_true: actual values
+    :type y_true: np.array
+    :param y_hat: predicted values
+    :type y_hat: np.array
+
+    :return: WMAPE
+    :rtype: float
+    """
     if len(y_true) != len(y_hat):
         raise Exception("y_true & y_hat should be of equal length")
     y_true, y_hat = np.array(y_true), np.array(y_hat)
@@ -40,16 +41,16 @@ def reg_metric_WMAPE(y_true, y_hat):
 
 
 def reg_metric_RMSE(y_true, y_hat):
-    '''
-    Computes Root Mean Squared Error.
-    Parameters:
-    -----------
-        y_true: actual values
-        y_hat: predicted values
-    Returns:
-    --------
-        RMAS(float)
-    '''
+    """This function is to compute Root Mean Squared Error.
+
+    :param y_true: actual values
+    :type y_true: np.array
+    :param y_hat: predicted values
+    :type y_hat: np.array
+
+    :return: RMSE
+    :rtype: float
+    """
     if len(y_true) != len(y_hat):
         raise Exception("y_true & y_hat should be of equal length")
     y_true, y_hat = np.array(y_true), np.array(y_hat)
@@ -59,11 +60,14 @@ def reg_metric_RMSE(y_true, y_hat):
 def get_performance(y_true, y_hat):
     """
     This function computes the evaluation metrics for regression
-    Parameters
-    y_true : Actual y value
-    y_hat : Predicted y value
-    Returns:
-    out_metric : dictionary of evaluation metrics and its values
+
+    :param y_true: actual values
+    :type y_true: np.array
+    :param y_hat: predicted values
+    :type y_hat: np.array
+
+    :return: dictionary of evaluation metrics
+    :rtype: dict
     """
     if len(y_true) != len(y_hat):
         raise Exception("y_true & y_hat should be of equal length")

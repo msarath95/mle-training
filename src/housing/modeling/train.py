@@ -7,12 +7,16 @@ from sklearn.tree import DecisionTreeRegressor
 
 def model_selection_fit(cfg, X, y):
     """Based on the input from config the model will be selected
-    Parameters:
-    -----------
-        cfg: configuration dict
-    Returns:
-    --------
-        model: sklearn model object
+
+    Parameters
+    ----------
+        cfg: dict
+            configuration
+
+    Return
+    ------
+        model: object
+            sklearn model object
     """
     if cfg["algo"] == "linear-ridge":
         model_cfg = cfg["linear-ridge"]
