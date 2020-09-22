@@ -4,7 +4,7 @@ from sklearn.compose import ColumnTransformer
 from sklearn.impute import SimpleImputer
 
 
-def impute(data, num_impute="mean", cat_impute="mode", num_constant=None, cat_constant=None, **kwargs):
+def impute(data, num_impute="mean", cat_impute="most_frequent", num_constant=None, cat_constant=None, **kwargs):
     """Impute data based on the method
 
     Parameters
@@ -27,7 +27,6 @@ def impute(data, num_impute="mean", cat_impute="mode", num_constant=None, cat_co
         imputer: object
             imputer object
     """
-    cols = data.columns
     dtype_dict = data.dtypes
     if num_impute == "constant":
         num_imputer = SimpleImputer(strategy=num_impute, fill_value=num_constant)
@@ -38,15 +37,17 @@ def impute(data, num_impute="mean", cat_impute="mode", num_constant=None, cat_co
         cat_imputer = SimpleImputer(strategy=cat_impute, fill_value=cat_constant)
     else:
         cat_imputer = SimpleImputer(strategy=cat_impute)
+    num_cols = list(data.select_dtypes(include=np.number).columns)
+    cat_cols = list(data.select_dtypes(exclude=np.number).columns)
     imputer = ColumnTransformer(
         transformers=[
-            ("num", num_imputer, data.select_dtypes(include=np.number).columns),
-            ("cat", cat_imputer, data.select_dtypes(exclude=np.number).columns),
+            ("num", num_imputer, num_cols),
+            ("cat", cat_imputer, cat_cols),
         ]
     )
     imputer.fit(data)
     data = imputer.transform(data)
-    data = pd.DataFrame(data, columns=cols)
+    data = pd.DataFrame(data, columns=num_cols + cat_cols)
     data = data.astype(dtype_dict)
     return data, imputer
 
