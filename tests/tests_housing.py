@@ -7,8 +7,7 @@ from housing.processing import processing as pr
 
 class TestHousing(unittest.TestCase):
     def test_impute(self):
-        data = pd.DataFrame(np.random.random((1000, 5)), columns=[
-            "x{}".format(x) for x in range(5)])
+        data = pd.DataFrame(np.random.random((1000, 5)), columns=["x{}".format(x) for x in range(5)])
         data["x5"] = np.random.choice(["A", "B", "C", "D", "E"], 1000)
         data["target"] = 2 * data["x0"] + 3 * data["x4"]
         data.loc[0:200, ["target", "x5"]] = np.nan
