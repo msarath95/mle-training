@@ -25,5 +25,5 @@ class TestHousing(unittest.TestCase):
             impute_by_mode, imputed_mode_value = pr.impute(
                 data, num_impute="most_frequent", cat_impute='most_frequent')
             assert impute_by_mode.isnull().any().sum().sum() == 0
-        finally:
-            pass
+        except AssertionError as err:
+            print(err)
