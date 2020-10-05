@@ -1,7 +1,11 @@
+import logging
+
 import numpy as np
 import pandas as pd
 from sklearn.compose import ColumnTransformer
 from sklearn.impute import SimpleImputer
+
+logger = logging.getLogger()
 
 
 def impute(data, num_impute="mean", cat_impute="most_frequent", num_constant=None, cat_constant=None, **kwargs):
@@ -39,6 +43,8 @@ def impute(data, num_impute="mean", cat_impute="most_frequent", num_constant=Non
         cat_imputer = SimpleImputer(strategy=cat_impute)
     num_cols = list(data.select_dtypes(include=np.number).columns)
     cat_cols = list(data.select_dtypes(exclude=np.number).columns)
+    logger.info("INFO: numerical columns imputation: {}".format(num_cols))
+    logger.info("INFO: cateogrical columns imputation: {}".format(cat_cols))
     imputer = ColumnTransformer(
         transformers=[
             ("num", num_imputer, num_cols),

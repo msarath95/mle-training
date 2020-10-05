@@ -130,7 +130,7 @@ def prepare_model_data(cfg):
             Configurations dict
     """
     create_data = (
-        (not is_data_exists(os.path.join(cfg["model_data_path"], "/train_{version}.csv".format(**cfg))))
+        (not is_data_exists(os.path.join(cfg["model_data_path"], "train_{version}.csv".format(**cfg))))
         or (cfg["over_write_model_data"])
         )
     fetch_housing_data(**cfg)
@@ -143,7 +143,7 @@ def prepare_model_data(cfg):
         test_y = test["median_house_value"]
         # Impute
         train_x, imputer = pr.impute(train_x, **cfg)
-        pkl.dump(imputer, open(os.path.join(cfg["models_path"], "/imputer_{version}.pkl".format(**cfg), "wb")))
+        pkl.dump(imputer, open(os.path.join(cfg["models_path"], "imputer_{version}.pkl".format(**cfg)), "wb"))
         # Feature Engineer
         train_x = pr.generate_features(train_x)
         # one-hotencode with column names?
@@ -152,9 +152,9 @@ def prepare_model_data(cfg):
         test_x = prepare_test_data(test_x, imputer)
         train = pd.concat([train_x, train_y], axis=1)
         test = pd.concat([test_x, test_y], axis=1)
-        train.to_csv(os.path.join(cfg["model_data_path"], "/train_{version}.csv".format(**cfg), index=False))
-        test.to_csv(os.path.join(cfg["model_data_path"], "/test_{version}.csv".format(**cfg), index=False))
+        train.to_csv(os.path.join(cfg["model_data_path"], "train_{version}.csv".format(**cfg)), index=False)
+        test.to_csv(os.path.join(cfg["model_data_path"], "test_{version}.csv".format(**cfg)), index=False)
     else:
-        train = pd.read_csv(os.path.join(cfg["model_data_path"], "/train_{version}.csv".format(**cfg)))
-        test = pd.read_csv(os.path.join(cfg["model_data_path"], "/test_{version}.csv".format(**cfg)))
+        train = pd.read_csv(os.path.join(cfg["model_data_path"], "train_{version}.csv".format(**cfg)))
+        test = pd.read_csv(os.path.join(cfg["model_data_path"], "test_{version}.csv".format(**cfg)))
     return train, test

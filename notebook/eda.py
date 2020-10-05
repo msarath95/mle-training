@@ -1,8 +1,8 @@
 import matplotlib.pyplot as plt
-
 from housing.preparation import data_utils as du
 from housing.preparation import utils as ut
 
+ut.configure_logger()
 cfg_path = "./config/config.yml"
 cfg = ut.read_config(cfg_path)
 
