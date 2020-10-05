@@ -1,10 +1,7 @@
-from __future__ import print_function
-
 import unittest
 
 import numpy as np
 import pandas as pd
-
 from housing.processing import processing as pr
 
 
@@ -28,6 +25,5 @@ class TestHousing(unittest.TestCase):
             impute_by_mode, imputed_mode_value = pr.impute(
                 data, num_impute="most_frequent", cat_impute='most_frequent')
             assert impute_by_mode.isnull().any().sum().sum() == 0
-
         finally:
             pass

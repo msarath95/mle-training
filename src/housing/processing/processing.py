@@ -5,7 +5,7 @@ from sklearn.impute import SimpleImputer
 
 
 def impute(data, num_impute="mean", cat_impute="most_frequent", num_constant=None, cat_constant=None, **kwargs):
-    """Impute data based on the method
+    """Impute data based on the method.
 
     Parameters
     ----------
@@ -19,7 +19,7 @@ def impute(data, num_impute="mean", cat_impute="most_frequent", num_constant=Non
             numerical constant to use when the num_imputer is constant
         cat_constant: str
             categorical constant to use when the cat_imputer is constant
-    
+
     Returns
     -------
         data: pd.DataFrame
@@ -53,7 +53,7 @@ def impute(data, num_impute="mean", cat_impute="most_frequent", num_constant=Non
 
 
 def impute_transform(data, imputer):
-    """Impute transform for test data set
+    """Impute transform for test data set.
 
     Parameters
     ----------
@@ -76,7 +76,7 @@ def impute_transform(data, imputer):
 
 
 def generate_features(data):
-    """Generates new features
+    """Generates new features.
 
     Parameters
     ----------

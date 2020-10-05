@@ -4,10 +4,9 @@ import tarfile
 
 import numpy as np
 import pandas as pd
+from housing.processing import processing as pr
 from six.moves import urllib
 from sklearn.model_selection import StratifiedShuffleSplit, train_test_split
-
-from housing.processing import processing as pr
 
 
 def is_data_exists(housing_path):
@@ -28,7 +27,7 @@ def is_data_exists(housing_path):
 
 
 def fetch_housing_data(housing_url, housing_path, over_write_raw_data=False, **kwargs):
-    """This function is used to download the data
+    """This function is used to download the data.
 
     Parameters
     ----------
@@ -39,7 +38,7 @@ def fetch_housing_data(housing_url, housing_path, over_write_raw_data=False, **k
         over_write_raw_data : bool, default True
             To over_write the existing data
     """
-    create_data = not is_data_exists(housing_path) or over_write_raw_data
+    create_data = ((not is_data_exists(housing_path)) or (over_write_raw_data))
     if create_data:
         os.makedirs(housing_path, exist_ok=True)
         tgz_path = os.path.join(housing_path, "housing.tgz")
@@ -50,7 +49,7 @@ def fetch_housing_data(housing_url, housing_path, over_write_raw_data=False, **k
 
 
 def load_housing_data(housing_path):
-    """This function is used to read the data
+    """This function is used to read the data.
 
     Parameters
     ----------
@@ -66,7 +65,7 @@ def load_housing_data(housing_path):
 
 
 def get_train_test_split(data, sampling_method="stratified", seed=42, test_size=0.2):
-    """This function is to split the train and test data
+    """This function is to split the train and test data.
 
     Parameters
     ----------
@@ -102,7 +101,7 @@ def get_train_test_split(data, sampling_method="stratified", seed=42, test_size=
 
 
 def prepare_test_data(data, imputer):
-    """This function creates the test data
+    """This function creates the test data.
 
     Parameters
     ----------
@@ -123,7 +122,7 @@ def prepare_test_data(data, imputer):
 
 
 def prepare_model_data(cfg):
-    """This function creates the train and test model data
+    """This function creates the train and test model data.
 
     Parameters
     ----------
@@ -131,9 +130,9 @@ def prepare_model_data(cfg):
             Configurations dict
     """
     create_data = (
-        not is_data_exists(cfg["model_data_path"] + "/train_{version}.csv".format(**cfg))
-        or cfg["over_write_model_data"]
-    )
+        (not is_data_exists(os.path.join(cfg["model_data_path"], "/train_{version}.csv".format(**cfg))))
+        or (cfg["over_write_model_data"])
+        )
     fetch_housing_data(**cfg)
     data = load_housing_data(cfg["housing_path"])
     if create_data:
@@ -144,7 +143,7 @@ def prepare_model_data(cfg):
         test_y = test["median_house_value"]
         # Impute
         train_x, imputer = pr.impute(train_x, **cfg)
-        pkl.dump(imputer, open(cfg["models_path"] + "/imputer_{version}.pkl".format(**cfg), "wb"))
+        pkl.dump(imputer, open(os.path.join(cfg["models_path"], "/imputer_{version}.pkl".format(**cfg), "wb")))
         # Feature Engineer
         train_x = pr.generate_features(train_x)
         # one-hotencode with column names?
@@ -153,9 +152,9 @@ def prepare_model_data(cfg):
         test_x = prepare_test_data(test_x, imputer)
         train = pd.concat([train_x, train_y], axis=1)
         test = pd.concat([test_x, test_y], axis=1)
-        train.to_csv(cfg["model_data_path"] + "/train_{version}.csv".format(**cfg), index=False)
-        test.to_csv(cfg["model_data_path"] + "/test_{version}.csv".format(**cfg), index=False)
+        train.to_csv(os.path.join(cfg["model_data_path"], "/train_{version}.csv".format(**cfg), index=False))
+        test.to_csv(os.path.join(cfg["model_data_path"], "/test_{version}.csv".format(**cfg), index=False))
     else:
-        train = pd.read_csv(cfg["model_data_path"] + "/train_{version}.csv".format(**cfg))
-        test = pd.read_csv(cfg["model_data_path"] + "/test_{version}.csv".format(**cfg))
+        train = pd.read_csv(os.path.join(cfg["model_data_path"], "/train_{version}.csv".format(**cfg)))
+        test = pd.read_csv(os.path.join(cfg["model_data_path"], "/test_{version}.csv".format(**cfg)))
     return train, test
