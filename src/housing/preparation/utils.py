@@ -24,6 +24,15 @@ def read_config(path):
 
 
 def configure_logger(log_conf="./config/log.conf", lvl="INFO"):
-    logging.config.fileConfig(fname='./config/log.conf')
+    """This function is to configure the logger.
+
+    Parameters
+    ----------
+        log_conf: str, default ./config/log.conf
+            log config path
+        lvl: str, default "INFO"
+            log messages level {'CRITICAL', 'ERROR', 'WARNING', 'INFO', 'DEBUG'}
+    """
+    logging.config.fileConfig(fname=log_conf)
     logger = logging.getLogger()
     logger.setLevel(lvl)

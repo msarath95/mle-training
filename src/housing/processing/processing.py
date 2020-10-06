@@ -5,7 +5,7 @@ import pandas as pd
 from sklearn.compose import ColumnTransformer
 from sklearn.impute import SimpleImputer
 
-logger = logging.getLogger()
+logger = logging.getLogger(__name__)
 
 
 def impute(data, num_impute="mean", cat_impute="most_frequent", num_constant=None, cat_constant=None, **kwargs):
