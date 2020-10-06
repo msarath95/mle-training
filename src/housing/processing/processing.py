@@ -8,6 +8,8 @@ from sklearn.impute import SimpleImputer
 from sklearn.impute._base import _BaseImputer
 from sklearn.utils.validation import check_array, check_is_fitted
 
+logger = logging.getLogger(__name__)
+
 
 class Imputer(_BaseImputer, TransformerMixin):
     """Impute data based on the method
@@ -66,8 +68,6 @@ class Imputer(_BaseImputer, TransformerMixin):
 
     def _more_tags(self):
         return {"allow_nan": True, "X_types": ["2darray", "string"]}
-
-logger = logging.getLogger(__name__)
 
 
 def impute(data, num_impute="mean", cat_impute="most_frequent", num_constant=None, cat_constant=None, **kwargs):
