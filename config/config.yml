@@ -11,7 +11,8 @@ num_impute: 'mean' # mean, most_frequent, median, constant
 num_constant: 0
 cat_impute: 'constant' # most_frequent, constant
 cat_constant: 'missing'
-version: 'v1' # change this else we'll overwrite the old version
+add_bedrooms_per_room: True
+version: 'v2' # change this else we'll overwrite the old version
 algo: 'linear-ridge' # linear-ridge, linear-lasso, decision_tree, random_forest
 linear-ridge:
     alpha: 1.0
