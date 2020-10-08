@@ -144,23 +144,12 @@ def prepare_model_data(cfg):
         test_x = test.drop("median_house_value", axis=1)
         train_y = train["median_house_value"]
         test_y = test["median_house_value"]
-
-        # # Impute
-        # train_x, imputer = pr.impute(train_x, **cfg)
-        # pkl.dump(imputer, open(os.path.join(cfg["models_path"], "imputer_{version}.pkl".format(**cfg)), "wb"))
-        # # Feature Engineer
-        # train_x = pr.generate_features(train_x)
-        # # one-hotencode with column names?
-        # train_x = pd.get_dummies(train_x)
-
-        # test_x = prepare_test_data(test_x, imputer)
         cat_cols = list(train_x.select_dtypes(exclude=np.number).columns)
         pl = Pipeline([
             ('imputer', pr.Imputer(num_impute=cfg["num_impute"], cat_impute=cfg["cat_impute"],
                                    num_constant=cfg["num_constant"], cat_constant=cfg["cat_constant"])),
             ('attribs_adder', pr.CombinedAttributesAdder(add_bedrooms_per_room=cfg["add_bedrooms_per_room"])),
-            ('label_endcode',
-                ColumnTransformer(transformers=[
+            ('label_endcode', ColumnTransformer(transformers=[
                         ("label_endcoder", OneHotEncoder(sparse=False), cat_cols)
                     ], remainder="passthrough"))
         ])

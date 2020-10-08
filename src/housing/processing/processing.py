@@ -172,9 +172,6 @@ class CombinedAttributesAdder(BaseEstimator, TransformerMixin):
         else:
             return pd.DataFrame(np.c_[X, rooms_per_household, population_per_household], columns=self._cols)
 
-# attr_adder = CombinedAttributesAdder(add_bedrooms_per_room=False)
-# housing_extra_attribs = attr_adder.transform(housing.values)
-
 
 def generate_features(data):
     """Generates new features.
