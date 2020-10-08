@@ -2,8 +2,6 @@ import logging
 import os
 import pickle as pkl
 
-from housing.preparation import data_utils
-
 logger = logging.getLogger(__name__)
 
 
@@ -25,9 +23,9 @@ def score(cfg, X, preproc=False):
     """
     logger.info("no of obeservation in data {}".format(X.shape[0]))
     logger.info("scoring with {}".format(cfg["version"]))
-    imputer = pkl.load(open(os.path.join(cfg["models_path"], "imputer_{version}.pkl".format(**cfg)), "rb"))
     model = pkl.load(open(os.path.join(cfg["models_path"], "model_{version}.pkl".format(**cfg)), "rb"))
+    pl = pkl.load(open(os.path.join(cfg["models_path"], "pipeline_{version}.pkl".format(**cfg)), "rb"))
     if not preproc:
-        X = data_utils.prepare_test_data(X, imputer)
+        X = pl.transform(X)
     y_hat = model.predict(X)
     return y_hat

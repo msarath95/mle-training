@@ -1,7 +1,7 @@
 housing_url: "https://raw.githubusercontent.com/ageron/handson-ml/master/datasets/housing/housing.tgz"
-housing_path: "./data/raw/"
-model_data_path: './data/processed/'
-models_path: './models/'
+housing_path: "../data/raw/"
+model_data_path: '../data/processed/'
+models_path: '../models/'
 seed: 2020
 test_size: 0.2
 over_write_raw_data: False
@@ -11,8 +11,7 @@ num_impute: 'mean' # mean, most_frequent, median, constant
 num_constant: 0
 cat_impute: 'constant' # most_frequent, constant
 cat_constant: 'missing'
-add_bedrooms_per_room: True
-version: 'v2' # change this else we'll overwrite the old version
+version: 'v1' # change this else we'll overwrite the old version
 algo: 'linear-ridge' # linear-ridge, linear-lasso, decision_tree, random_forest
 linear-ridge:
     alpha: 1.0
