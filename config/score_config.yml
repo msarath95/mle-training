@@ -1,4 +1,0 @@
-version: "v1"
-models_path: './models/'
-score_data_path: "data/processed/test_v1.csv"
-preproc: True
