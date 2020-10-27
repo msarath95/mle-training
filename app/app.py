@@ -21,13 +21,12 @@ class MedianHousingFeatures(FlaskForm):
     population = FloatField("Population")
     households = FloatField("Households")
     median_income = FloatField("Median Income")
-    ocean_proximity = SelectField("Ocean Proximity", 
-                                 choices=[("<1H OCEAN", "<1H OCEAN"),
-                                          ("INLAND", "INLAND"),
-                                          ("ISLAND", "ISLAND"),
-                                          ("NEAR BAY", "NEAR BAY"),
-                                          ("NEAR OCEAN", "NEAR OCEAN"),
-                                          ])
+    ocean_proximity = SelectField("Ocean Proximity",
+                                  choices=[("<1H OCEAN", "<1H OCEAN"),
+                                           ("INLAND", "INLAND"),
+                                           ("ISLAND", "ISLAND"),
+                                           ("NEAR BAY", "NEAR BAY"),
+                                           ("NEAR OCEAN", "NEAR OCEAN")])
     submit = SubmitField('Submit')
 
 
@@ -80,6 +79,7 @@ def predict():
         return jsonify({'prediction': sr.score(score_cfg, observation)[0]}), 201
 
 # curl -i -H "Content-Type: application/json" -X POST -d '{"longitude": -120.430000, "latitude": 34.870000, "housing_median_age": 21.000000, "total_rooms": 2131.000000, "total_bedrooms": 329.000000, "population": 1094.000000, "households": 353.000000, "median_income": 4.664800, "ocean_proximity": "<1H OCEAN"}' http://localhost:5000/predict
+
 
 if __name__ == '__main__':
     app.run(debug=True)
