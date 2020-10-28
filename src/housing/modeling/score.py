@@ -2,6 +2,8 @@ import logging
 import os
 import pickle as pkl
 
+import pandas as pd
+
 logger = logging.getLogger(__name__)
 
 
@@ -21,6 +23,8 @@ def score(cfg, X, preproc=False):
         y_hat: np.array
             predictions
     """
+    if type(X) == dict:
+        X = pd.DataFrame.from_dict(X, orient="index").T
     logger.info("no of obeservation in data {}".format(X.shape[0]))
     logger.info("scoring with {}".format(cfg["version"]))
     model = pkl.load(open(os.path.join(cfg["models_path"], "model_{version}.pkl".format(**cfg)), "rb"))
