@@ -59,8 +59,11 @@ def predict():
                 "median_income": form.median_income.data,
                 "ocean_proximity": form.ocean_proximity.data,
             }
-            prediction = sr.score(score_cfg, observation)[0]
-            return render_template('prediction.html', prediction=prediction)
+            try:
+                prediction = sr.score(score_cfg, observation)[0]
+                return render_template('prediction.html', prediction=prediction)
+            except Exception as error:
+                return render_template('error.html', error=error)
         return render_template('input_features.html', form=form)
     else:
         if not request.json:
@@ -76,7 +79,8 @@ def predict():
             "median_income": request.json.get("median_income", ""),
             "ocean_proximity": request.json.get("ocean_proximity", ""),
         }
-        return jsonify({'prediction': sr.score(score_cfg, observation)[0]}), 201
+        prediction = sr.score(score_cfg, observation)[0]
+        return jsonify({'prediction': prediction}), 201
 
 # curl -i -H "Content-Type: application/json" -X POST -d '{"longitude": -120.430000, "latitude": 34.870000, "housing_median_age": 21.000000, "total_rooms": 2131.000000, "total_bedrooms": 329.000000, "population": 1094.000000, "households": 353.000000, "median_income": 4.664800, "ocean_proximity": "<1H OCEAN"}' http://localhost:5000/predict
 
